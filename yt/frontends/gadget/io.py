@@ -202,8 +202,14 @@ class IOHandlerGadgetHDF5(IOHandlerSPH):
                     col = int(field.rsplit("_", 1)[-1])
                     data = g["Metallicity"][si:ei, col][mask]
                 elif field.startswith("GFM_Metals_"):
-                    col = int(field.rsplit("_", 1)[-1])
-                    data = g["GFM_Metals"][si:ei, col][mask]
+########################THIS IF STATEMENT BELOW IS THE ONLY THING I ADDED HERE#################################################################
+########################This+ a few lines in the .gas() convenience function in data_structures fixes the way GFM_Metals_78 is accessed, so 
+########################yt doesn't think you want the abundance of the 78th element############################################################
+                    if '_78' in field:
+                        data=g["GFM_Metals_78"][si:ei][mask]
+                    else:
+                        col = int(field.rsplit("_", 1)[-1])
+                        data = g["GFM_Metals"][si:ei, col][mask]                
                 elif field.startswith("Chemistry_"):
                     col = int(field.rsplit("_", 1)[-1])
                     data = g["ChemistryAbundances"][si:ei, col][mask]
