@@ -3,13 +3,13 @@ This file outlines important changes I have made to yt.
 1) Changes to yt/frontends/arepo/data_structures.py. 
 
 
-The HDF5 files created by TNG_Data_Extraction_Pipeline are more extensive than the native HDF5 halo cutouts, containing metadata, particle data, and if a ray, spectral and geometric data. We wnt to access this data in as uniform a way as possible. We also want access to particle membership information and particle histories.
+The HDF5 files created by TNG_Data_Extraction_Pipeline are more extensive than the native HDF5 halo cutouts, containing metadata, particle data, and if a ray, spectral and geometric data. We want to access this data in as uniform a way as possible. We also want access to particle membership information and particle histories.
 
-Large changes were made to AREPO frontend to accomodate the new HDF5 data format. We create a galactocentric coordinate system and revamp the unit system to be more comprehensive, and to facilitate using Trident. Other changes include the ability to load past particle data, and giving units to spectral properties determined by Trident and defining convenience functions (gas(), stars(), bh(), los()) that make accessing data more uniform. 
+Large changes were made to AREPO frontend to accommodate the new HDF5 data format. We create a galactocentric coordinate system and revamp the unit system to be more comprehensive, and to facilitate using Trident. Other changes include the ability to load past particle data, and giving units to spectral properties determined by Trident and defining convenience functions (gas(), stars(), bh(), los()) that make accessing data more uniform. 
 
 gas() and stars() use the standard yt ds.r['PartTypeN', 'Property'] syntax at their core, but the gas() function is complicated because it has to be defined slightly differently for halo vs ray files; because we want to be able to access spectral properties derived by Trident; and because gas properties are "layered" with 2 snapshots in the same HDF5 file, giving vector properties multiple orientations. These functions also handle any last-minute unit corrections. 
 
-hs() and los() are used to load metadata which is usually not accessible in yt. So we have to construct data objects to hold this new info. This is done using _get_hsvals() and _get_rayvals() methods, which give properties correct units and vector properties the correct unit system. 
+hs() and los() are used to load metadata which is usually not accessible in yt. So we have to construct data objects to hold this new info. This is done using _get_hsvals() and _get_rayvals() methods, which give properties correct units and vector properties the correct coordinate system. 
 
 2) Large plugins.py file
 
